@@ -502,6 +502,9 @@
   var params = new URLSearchParams(window.location.search);
   var biz = (params.get('biz') || '').trim();
   var hours = (params.get('hours') || '').trim();
+  // GUARD: this slot is for a SHORT NEUTRAL FACT ("Phone only", "24 to 48 hours").
+  // A long or sentence-shaped value is a critique of the business and must never render.
+  if (hours.length > 26 || /[.,;]/.test(hours)) { hours = ''; }
   if(biz){
     document.title = biz + ", concept demo";
     document.querySelectorAll('.biz-name').forEach(function(el){ el.textContent = biz; });
