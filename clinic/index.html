@@ -1,0 +1,566 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Instant Reply Concept</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #F1F4EF;
+    --bg-raised: #FFFFFF;
+    --ink: #1C2B22;
+    --ink-soft: #4B5A50;
+    --line: #D6DECC;
+    --pine: #2F5D50;
+    --pine-deep: #1F433A;
+    --pine-glow: rgba(47,93,80,0.16);
+    --amber: #C97A1E;
+    --amber-glow: rgba(201,122,30,0.16);
+    --amber-ink: #4A2E0C;
+    --paw-red: #B4482F;
+    --shadow: 0 18px 40px -18px rgba(31,67,58,0.35);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg: #10201A;
+      --bg-raised: #16281F;
+      --ink: #EAEFE8;
+      --ink-soft: #A9BAAE;
+      --line: #2B3E33;
+      --pine: #74BFA3;
+      --pine-deep: #0C1814;
+      --pine-glow: rgba(116,191,163,0.14);
+      --amber: #E8A94C;
+      --amber-glow: rgba(232,169,76,0.14);
+      --amber-ink: #241706;
+      --paw-red: #E08464;
+      --shadow: 0 18px 44px -16px rgba(0,0,0,0.6);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg: #10201A;
+    --bg-raised: #16281F;
+    --ink: #EAEFE8;
+    --ink-soft: #A9BAAE;
+    --line: #2B3E33;
+    --pine: #74BFA3;
+    --pine-deep: #0C1814;
+    --pine-glow: rgba(116,191,163,0.14);
+    --amber: #E8A94C;
+    --amber-glow: rgba(232,169,76,0.14);
+    --amber-ink: #241706;
+    --paw-red: #E08464;
+    --shadow: 0 18px 44px -16px rgba(0,0,0,0.6);
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"Work Sans", ui-sans-serif, system-ui, -apple-system, sans-serif;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{
+    font-family:"Fraunces", Georgia, "Times New Roman", serif;
+    font-weight:600;
+    text-wrap:balance;
+    margin:0;
+    color:var(--ink);
+  }
+  a{color:inherit;}
+  img{max-width:100%;display:block;}
+
+  .disclaimer{
+    background:var(--pine-deep);
+    color:#D9E4DC;
+    font-size:0.82rem;
+    padding:11px 20px;
+    text-align:center;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    border-bottom:1px solid rgba(255,255,255,0.06);
+  }
+  .disclaimer svg{ flex:none; width:15px; height:15px; opacity:0.85; }
+  .disclaimer b{ color: var(--amber); font-weight:600; }
+
+  .wrap{
+    max-width:900px;
+    margin:0 auto;
+    padding:0 24px;
+  }
+
+  header.hero{
+    position:relative;
+    padding:52px 0 40px;
+  }
+  .pulse-line{
+    display:block;
+    width:100%;
+    max-width:220px;
+    height:32px;
+    margin-bottom:22px;
+    opacity:0.8;
+  }
+
+  .eyebrow{
+    font-size:0.78rem;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--pine);
+    font-weight:600;
+    margin-bottom:18px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .eyebrow .dot{
+    width:7px;height:7px;border-radius:50%;
+    background:var(--paw-red);
+    box-shadow:0 0 0 4px color-mix(in srgb, var(--paw-red) 18%, transparent);
+  }
+  h1.headline{
+    font-size:clamp(2rem, 5.6vw, 3.15rem);
+    line-height:1.14;
+    max-width:15ch;
+  }
+  .sub{
+    margin-top:18px;
+    max-width:58ch;
+    font-size:1.05rem;
+    color:var(--ink-soft);
+  }
+
+  .compare{
+    display:grid;
+    grid-template-columns:1fr auto 1fr;
+    gap:14px;
+    align-items:stretch;
+    margin-top:40px;
+  }
+  @media (max-width:640px){
+    .compare{grid-template-columns:1fr;}
+    .compare .arrow-mid{transform:rotate(90deg); margin:2px auto;}
+  }
+  .arrow-mid{
+    display:flex; align-items:center; justify-content:center;
+    color:var(--ink-soft);
+    opacity:0.55;
+  }
+  .card{
+    background:var(--bg-raised);
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:20px 20px 22px;
+    display:flex;
+    gap:14px;
+    align-items:flex-start;
+  }
+  .card .icon{
+    flex:none;
+    width:38px;height:38px;
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .card.typical{ opacity:0.82; }
+  .card.typical .icon{ background:color-mix(in srgb, var(--paw-red) 16%, transparent); }
+  .card.typical .icon svg{ stroke:var(--paw-red); }
+  .card.instant{ border-color:color-mix(in srgb, var(--pine) 45%, var(--line)); box-shadow:0 0 0 1px color-mix(in srgb, var(--pine) 12%, transparent) inset; }
+  .card.instant .icon{ background:color-mix(in srgb, var(--pine) 18%, transparent); position:relative; }
+  .card.instant .icon svg{ stroke:var(--pine); }
+  .card.instant .icon::after{
+    content:"";
+    position:absolute; inset:-4px;
+    border-radius:50%;
+    border:1px solid color-mix(in srgb, var(--pine) 55%, transparent);
+    animation:ring 2.2s ease-out infinite;
+  }
+  @keyframes ring{
+    0%{ transform:scale(0.85); opacity:0.9; }
+    100%{ transform:scale(1.35); opacity:0; }
+  }
+  @media (prefers-reduced-motion:reduce){ .card.instant .icon::after{animation:none;} }
+  .card .tag{
+    font-size:0.72rem;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    font-weight:600;
+  }
+  .card.typical .tag{color:var(--paw-red);}
+  .card.instant .tag{color:var(--pine);}
+  .card .big{
+    font-family:"Fraunces", serif;
+    font-size:1.55rem;
+    font-weight:600;
+    margin-top:6px;
+    line-height:1.2;
+  }
+  .card .fine{
+    color:var(--ink-soft);
+    font-size:0.9rem;
+    margin-top:5px;
+  }
+
+  section.demo{
+    margin:64px 0 56px;
+  }
+  .demo-head{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap:16px;
+    flex-wrap:wrap;
+    margin-bottom:20px;
+  }
+  .demo-head h2{ font-size:1.4rem; }
+  .demo-head .live-pill{
+    font-size:0.74rem;
+    font-weight:600;
+    letter-spacing:0.05em;
+    text-transform:uppercase;
+    color:var(--pine);
+    border:1px solid color-mix(in srgb, var(--pine) 40%, transparent);
+    border-radius:999px;
+    padding:5px 12px;
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    white-space:nowrap;
+  }
+  .live-pill .pulse{
+    width:7px;height:7px;border-radius:50%;
+    background:var(--pine);
+    animation:pulse 1.6s ease-in-out infinite;
+  }
+  @keyframes pulse{
+    0%,100%{ opacity:1; transform:scale(1); }
+    50%{ opacity:0.35; transform:scale(0.7); }
+  }
+  @media (prefers-reduced-motion:reduce){
+    .live-pill .pulse{animation:none;}
+  }
+
+  .panel{
+    background:var(--bg-raised);
+    border:1px solid var(--line);
+    border-radius:20px;
+    box-shadow:var(--shadow);
+    padding:32px;
+    position:relative;
+    overflow:hidden;
+  }
+  .panel::before{
+    content:"";
+    position:absolute; top:0; left:0; right:0; height:3px;
+    background:linear-gradient(90deg, var(--pine), var(--amber));
+  }
+  @media (max-width:640px){ .panel{padding:22px;} }
+
+  form.request-form{
+    display:grid;
+    gap:16px;
+  }
+  .field label{
+    display:block;
+    font-size:0.84rem;
+    font-weight:600;
+    margin-bottom:6px;
+    color:var(--ink-soft);
+  }
+  .field input, .field textarea{
+    width:100%;
+    font-family:inherit;
+    font-size:1rem;
+    padding:11px 13px;
+    border-radius:9px;
+    border:1px solid var(--line);
+    background:var(--bg);
+    color:var(--ink);
+  }
+  .field .select-wrap{
+    position:relative;
+  }
+  .field select{
+    width:100%;
+    font-family:inherit;
+    font-size:1rem;
+    padding:11px 36px 11px 13px;
+    border-radius:9px;
+    border:1px solid var(--line);
+    background:var(--bg);
+    color:var(--ink);
+    appearance:none;
+    -webkit-appearance:none;
+    cursor:pointer;
+  }
+  .field .select-wrap::after{
+    content:"";
+    position:absolute;
+    right:14px; top:50%;
+    width:8px; height:8px;
+    border-right:2px solid var(--ink-soft);
+    border-bottom:2px solid var(--ink-soft);
+    transform:translateY(-70%) rotate(45deg);
+    pointer-events:none;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus{
+    outline:2px solid var(--pine);
+    outline-offset:1px;
+  }
+  .row2{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  @media (max-width:520px){ .row2{grid-template-columns:1fr;} }
+
+  button.submit-btn{
+    margin-top:6px;
+    font-family:inherit;
+    font-size:1rem;
+    font-weight:600;
+    color:var(--amber-ink);
+    background:var(--amber);
+    border:none;
+    border-radius:10px;
+    padding:14px 20px;
+    cursor:pointer;
+    transition:transform 0.12s ease, filter 0.12s ease;
+  }
+  button.submit-btn:hover{ filter:brightness(1.08); }
+  button.submit-btn:active{ transform:scale(0.98); }
+  button.submit-btn:focus-visible{ outline:3px solid var(--pine); outline-offset:2px; }
+
+  .result{
+    display:none;
+    text-align:center;
+    padding:16px 8px 4px;
+  }
+  .result.show{ display:block; }
+  .result .check{
+    width:56px;height:56px;
+    border-radius:50%;
+    background:color-mix(in srgb, var(--pine) 16%, transparent);
+    display:flex;align-items:center;justify-content:center;
+    margin:0 auto 18px;
+  }
+  .result .check svg{ width:26px; height:26px; }
+  .result h3{ font-size:1.35rem; }
+  .result p{ color:var(--ink-soft); margin-top:10px; }
+  .result .countdown{
+    font-family:"Fraunces", serif;
+    font-variant-numeric: tabular-nums;
+    font-size:2.4rem;
+    font-weight:600;
+    color:var(--pine);
+    margin:16px 0 2px;
+  }
+  .result .window-label{ color:var(--ink-soft); font-size:0.92rem; }
+  .result .note{
+    margin-top:22px;
+    font-size:0.82rem;
+    color:var(--ink-soft);
+    border-top:1px dashed var(--line);
+    padding-top:16px;
+  }
+  .again{
+    background:none;
+    border:1px solid var(--line);
+    color:var(--ink-soft);
+    font-family:inherit;
+    font-size:0.86rem;
+    padding:8px 16px;
+    border-radius:8px;
+    cursor:pointer;
+    margin-top:14px;
+  }
+
+  footer{
+    border-top:1px solid var(--line);
+    padding:32px 0 44px;
+  }
+  footer .sign{
+    font-size:0.95rem;
+    color:var(--ink-soft);
+    max-width:60ch;
+  }
+  footer .sign b{ color:var(--ink); }
+  footer .meta{
+    margin-top:16px;
+    font-size:0.78rem;
+    color:var(--ink-soft);
+    opacity:0.75;
+  }
+</style>
+</head>
+<body>
+
+<div class="disclaimer">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v5" stroke-linecap="round"/><circle cx="12" cy="16" r="0.6" fill="currentColor"/></svg>
+  <span><b>This is a concept demo</b>, built for <span class="biz-name">a clinic</span>, not their official website. Nothing typed below is sent or stored anywhere.</span>
+</div>
+
+<div class="wrap">
+
+  <header class="hero">
+    <svg class="pulse-line" viewBox="0 0 220 32" aria-hidden="true">
+      <polyline points="0,16 70,16 90,4 105,28 120,16 220,16" fill="none" stroke="var(--pine)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.8"/>
+    </svg>
+
+    <div class="eyebrow"><span class="dot"></span> A quick idea, not a pitch</div>
+    <h1 class="headline">What if a missed call never meant a lost patient?</h1>
+    <p class="sub"><span class="biz-name">This clinic</span>, right now: <span class="reply-window">phone only, no online booking</span>. This is just a small working look at what an instant appointment confirmation could feel like instead.</p>
+
+    <div class="compare">
+      <div class="card typical">
+        <div class="icon"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.68 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.32 1.85.55 2.81.68A2 2 0 0 1 22 16.92z"/></svg></div>
+        <div>
+          <div class="tag">Common today</div>
+          <div class="big">Call and hope</div>
+          <div class="fine">Phone it in, hope someone picks up.</div>
+        </div>
+      </div>
+      <div class="arrow-mid">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </div>
+      <div class="card instant">
+        <div class="icon"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
+        <div>
+          <div class="tag">This demo</div>
+          <div class="big">Confirmed on the spot</div>
+          <div class="fine">Book it, get confirmed right away, no callback wait.</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section class="demo">
+    <div class="demo-head">
+      <h2>Try the instant version</h2>
+      <span class="live-pill"><span class="pulse"></span> Live, working demo</span>
+    </div>
+
+    <div class="panel">
+      <form class="request-form" id="requestForm">
+        <div class="row2">
+          <div class="field">
+            <label for="petName">Your name</label>
+            <input type="text" id="petName" placeholder="e.g. Sam" required>
+          </div>
+          <div class="field">
+            <label for="species">Appointment type</label>
+            <div class="select-wrap">
+              <select id="species">
+                <option>New patient</option>
+                <option>Check-up</option>
+                <option>Follow-up</option>
+                <option>Other</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="field">
+          <label for="issue">What's it for?</label>
+          <textarea id="issue" rows="3" placeholder="e.g. Tooth pain on the lower left side" required></textarea>
+        </div>
+        <div class="field">
+          <label for="phone">Best number to reach you</label>
+          <input type="tel" id="phone" placeholder="04xx xxx xxx" required>
+        </div>
+        <button type="submit" class="submit-btn">Send, and see what happens</button>
+      </form>
+
+      <div class="result" id="result">
+        <div class="check">
+          <svg viewBox="0 0 24 24" fill="none" stroke="var(--pine)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 6 9 17l-5-5"/>
+          </svg>
+        </div>
+        <h3 id="resultName">Got it.</h3>
+        <p>Someone will call you back to confirm your appointment soon. No waiting to hear if the message even landed.</p>
+        <div class="countdown" id="countdown">15:00</div>
+        <p class="window-label">estimated callback window</p>
+        <div class="note">Demo only: this page did not send a real message, and nothing you typed was saved anywhere. It's here to show the feeling of an instant reply, not to actually book anything.</div>
+        <button class="again" id="againBtn" type="button">Try it again</button>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p class="sign">Built this as a free concept for <b class="biz-name">a clinic</b>. Not a sales pitch, just a working idea. If it's useful, happy to build the real thing. If not, no worries either way.</p>
+    <p class="sign" style="margin-top:14px;">Hamza</p>
+    <p class="meta">Generic concept page. No affiliation with <span class="biz-name">this business</span>. Their real site and details belong to them.</p>
+  </footer>
+
+</div>
+
+<script>
+(function(){
+  var params = new URLSearchParams(window.location.search);
+  var biz = (params.get('biz') || '').trim();
+  var hours = (params.get('hours') || '').trim();
+  // GUARD: this slot is for a SHORT NEUTRAL FACT ("Phone only", "24 to 48 hours").
+  // A long or sentence-shaped value is a critique of the business and must never render.
+  if (hours.length > 26 || /[.,;]/.test(hours)) { hours = ''; }
+  if(biz){
+    document.title = biz + ", concept demo";
+    document.querySelectorAll('.biz-name').forEach(function(el){ el.textContent = biz; });
+  }
+  if(hours){
+    document.querySelectorAll('.reply-window').forEach(function(el){ el.textContent = hours; });
+  }
+})();
+(function(){
+  var form = document.getElementById('requestForm');
+  var result = document.getElementById('result');
+  var resultName = document.getElementById('resultName');
+  var countdownEl = document.getElementById('countdown');
+  var againBtn = document.getElementById('againBtn');
+  var timer = null;
+
+  function startCountdown(seconds){
+    if(timer) clearInterval(timer);
+    var remaining = seconds;
+    function render(){
+      var m = Math.floor(remaining/60);
+      var s = remaining%60;
+      countdownEl.textContent = m + ":" + (s<10?"0":"") + s;
+    }
+    render();
+    timer = setInterval(function(){
+      remaining -= 1;
+      if(remaining <= 0){
+        remaining = 0;
+        render();
+        clearInterval(timer);
+        return;
+      }
+      render();
+    }, 1000);
+  }
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    var name = document.getElementById('petName').value.trim();
+    resultName.textContent = name ? ("Got it, " + name + ".") : "Got it.";
+    form.style.display = 'none';
+    result.classList.add('show');
+    startCountdown(15*60);
+    result.scrollIntoView({behavior:'smooth', block:'center'});
+  });
+
+  againBtn.addEventListener('click', function(){
+    if(timer) clearInterval(timer);
+    result.classList.remove('show');
+    form.style.display = 'grid';
+    form.reset();
+    form.scrollIntoView({behavior:'smooth', block:'center'});
+  });
+})();
+</script>
+
+</body>
+</html>
