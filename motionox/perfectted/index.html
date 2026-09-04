@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>A quick audio note on your last two uploads</title>
+<style>
+  :root{
+    --bg:#0e0f12; --card:#16181d; --line:#23262d;
+    --text:#e8eaee; --muted:#8b90a0; --accent:#2dd4a0; --warn:#e8b93e;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);
+       font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+       padding:32px 20px}
+  .wrap{max-width:860px;margin:0 auto}
+  h1{font-size:26px;line-height:1.25;margin:0 0 6px}
+  .sub{color:var(--muted);margin:0 0 28px}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media(max-width:680px){.grid{grid-template-columns:1fr}}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px}
+  .card h2{font-size:14px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
+  video{width:100%;border-radius:8px;display:block;background:#000}
+  .n{font-size:28px;font-weight:700;margin:12px 0 2px}
+  .n.bad{color:var(--warn)} .n.good{color:var(--accent)}
+  .cap{color:var(--muted);font-size:13px}
+  .note{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--accent);
+        border-radius:10px;padding:16px 18px;margin:22px 0}
+  .note p{margin:0 0 10px} .note p:last-child{margin:0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px}
+  th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line)}
+  th{color:var(--muted);font-weight:600;font-size:13px;letter-spacing:.04em;text-transform:uppercase}
+  td.v{font-variant-numeric:tabular-nums;font-weight:600}
+  footer{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);color:var(--muted);font-size:14px}
+  footer b{color:var(--text);font-weight:600}
+  a{color:var(--accent)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1 id="head">A quick audio note on your last two uploads</h1>
+  <p class="sub">Fifteen seconds, same footage, nothing recut. Sound only.</p>
+
+  <div class="grid">
+    <div class="card">
+      <h2>Your upload, as it plays now</h2>
+      <video controls preload="metadata" playsinline src="before.mp4"></video>
+      <div class="n bad">-27.6 LUFS</div>
+      <div class="cap">About 14 dB below where the platform sits</div>
+    </div>
+    <div class="card">
+      <h2>Same clip, levels corrected</h2>
+      <video controls preload="metadata" playsinline src="after.mp4"></video>
+      <div class="n good">-14.9 LUFS</div>
+      <div class="cap">Matches the platform, and your own other video</div>
+    </div>
+  </div>
+
+  <div class="note">
+    <p><b>Turn your volume to a normal level and play the left one, then the right one.</b> Do not adjust anything in between. That difference is what a viewer meets in the first second.</p>
+    <p>YouTube turns loud audio <em>down</em>. It never turns quiet audio <em>up</em>. So a quiet upload stays quiet next to everything else in the feed, and the viewer has to go and find the volume before they have decided to care.</p>
+  </div>
+
+  <table>
+    <tr><th>Measured</th><th>Integrated loudness</th></tr>
+    <tr><td>Your upload from 2 days earlier</td><td class="v">-12.3 LUFS</td></tr>
+    <tr><td>The upload above</td><td class="v">-27.6 LUFS</td></tr>
+    <tr><td>Difference between your own two videos</td><td class="v">15.3 LU</td></tr>
+    <tr><td>The corrected version</td><td class="v">-14.9 LUFS</td></tr>
+  </table>
+
+  <p class="cap">Measured with EBU R128 on the first fifteen seconds of each file, straight from your channel. Nothing here is an estimate.</p>
+
+  <div class="note">
+    <p><b>Why it is worth a look:</b> your Shorts are doing the numbers. The two long-form uploads either side of this one sat in the low double digits. Sound is not the whole reason, but it is the one part that costs nothing to fix and applies to every upload after it.</p>
+  </div>
+
+  <footer>
+    <b>Hamza Nasim</b><br>
+    Operations, MotionOx<br>
+    hamza@motionox.co<br>
+    motionox.co
+  </footer>
+
+</div>
+<script>
+  // The link carries the business name. No tracking, no cookies, no third-party script.
+  try {
+    var n = new URLSearchParams(location.search).get('n');
+    if (n && /^[\w .,'&-]{1,60}$/.test(n)) {
+      document.getElementById('head').textContent =
+        'A quick audio note on ' + n + "'s last two uploads";
+      document.title = 'A quick audio note for ' + n;
+    }
+  } catch (e) {}
+</script>
+</body>
+</html>
