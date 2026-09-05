@@ -10,16 +10,23 @@
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
   --ink:#f4f4f2; --dim:#9a9a94; --line:rgba(255,255,255,.10);
-  --bg:#0c0d0f; --card:#15171a; --green:#2dd4a0; --blue:#3b82f6; --red:#e5484d;
+  --bg:#0c0d0f; --card:#15171a; --accent:#2dd4a0; --blue:#3b82f6; --red:#e5484d;
   --font:"Satoshi",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
 }
 body{background:var(--bg);color:var(--ink);font-family:var(--font);-webkit-font-smoothing:antialiased;
   min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:16px 14px 54px}
 .tag{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);
   border:1px solid var(--line);border-radius:999px;padding:6px 13px;margin-bottom:14px}
-h1{font-size:clamp(24px,4.6vw,34px);font-weight:700;line-height:1.12;text-align:center;max-width:15ch;letter-spacing:-.02em}
-h1 em{font-style:normal;color:var(--green)}
-.sub{color:var(--dim);font-size:14px;line-height:1.55;text-align:center;max-width:42ch;margin:10px 0 20px}
+h1{font-size:clamp(24px,4.6vw,34px);font-weight:700;line-height:1.12;text-align:center;max-width:16ch;letter-spacing:-.02em}
+h1 em{font-style:normal;color:var(--accent)}
+.sub{color:var(--dim);font-size:14px;line-height:1.55;text-align:center;max-width:42ch;margin:10px 0 16px}
+
+/* NAME FIELD, the play-around part */
+.namewrap{display:flex;gap:8px;margin-bottom:18px;width:min(330px,100%)}
+.namewrap input{flex:1;background:var(--card);border:1px solid var(--line);border-radius:11px;
+  padding:10px 13px;color:var(--ink);font-family:var(--font);font-size:13.5px;outline:none;transition:.16s}
+.namewrap input::placeholder{color:#5d6068}
+.namewrap input:focus{border-color:rgba(255,255,255,.35)}
 
 /* PHONE */
 .phone{width:min(330px,100%);border-radius:42px;padding:12px;background:linear-gradient(#2a2d33,#141619);
@@ -68,8 +75,8 @@ h1 em{font-style:normal;color:var(--green)}
 .slot:active{transform:none}
 .confirm{align-self:stretch;background:rgba(45,212,160,.09);border:1px solid rgba(45,212,160,.35);
   border-radius:14px;padding:13px 15px;font-size:13px;line-height:1.5}
-.confirm b{color:var(--green)}
-.tick{display:inline-grid;place-items:center;width:19px;height:19px;border-radius:50%;background:var(--green);
+.confirm b{color:var(--accent)}
+.tick{display:inline-grid;place-items:center;width:19px;height:19px;border-radius:50%;background:var(--accent);
   color:#04120d;font-size:12px;font-weight:900;margin-right:7px;vertical-align:-4px;
   animation:tick .45s cubic-bezier(.2,.9,.3,1.4) both}
 @keyframes tick{from{transform:scale(0) rotate(-40deg)}to{transform:none}}
@@ -85,7 +92,7 @@ a.ghost,button.ghost{background:transparent;color:var(--ink);border:1px solid va
 .timeline{display:flex;gap:0;margin:20px 0 4px;max-width:330px;width:100%}
 .step{flex:1;text-align:center;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:#5d6068;
   padding-top:12px;border-top:2px solid rgba(255,255,255,.09);transition:.35s}
-.step.on{color:var(--green);border-top-color:var(--green)}
+.step.on{color:var(--accent);border-top-color:var(--accent)}
 @media (max-width:400px){.phone{padding:10px;border-radius:34px}.screen{border-radius:26px}h1{font-size:23px}.sub{font-size:13px;margin:8px 0 16px}}
 @media (prefers-reduced-motion:reduce){
   *{animation:none!important;transition:none!important}
@@ -97,8 +104,12 @@ a.ghost,button.ghost{background:transparent;color:var(--ink);border:1px solid va
 </head>
 <body>
 <div class="tag">Concept demo &middot; not a real service</div>
-<h1>The call you miss, <em>answered anyway</em></h1>
+<h1 id="h1">The call you miss, <em>answered anyway</em></h1>
 <p class="sub" id="sub">Watch what happens when nobody can get to the phone.</p>
+
+<div class="namewrap">
+  <input type="text" id="callername" maxlength="24" placeholder="Type a name to play the caller&hellip;">
+</div>
 
 <div class="phone">
   <div class="screen">
@@ -106,8 +117,8 @@ a.ghost,button.ghost{background:transparent;color:var(--ink);border:1px solid va
     <div class="statusbar"><span>9:41</span><span>&#9679;&#9679;&#9679;&#9679;</span></div>
 
     <div class="call" id="call">
-      <div class="avatar">?</div>
-      <div class="caller">Unknown</div>
+      <div class="avatar" id="calleravatar">?</div>
+      <div class="caller" id="callername_display">Unknown</div>
       <div class="callsub" id="callsub">mobile</div>
       <div class="ringing" id="ring">calling&hellip;</div>
       <div class="callbtns"><div class="cbtn decline">&#9990;</div><div class="cbtn accept">&#9742;</div></div>
@@ -138,6 +149,44 @@ Nothing typed here is sent or stored anywhere. Built to show one idea: a missed 
 
 <script>
 var BIZ = new URLSearchParams(location.search).get('biz') || 'Your business';
+var TYPE = (new URLSearchParams(location.search).get('type') || 'trade').toLowerCase();
+
+// Same mechanic every time: ring, miss, text back, pick a slot, confirm.
+// Only the WORDING changes per business type, so the surface fits a
+// restaurant, a clinic, a one-person creative/consulting business, or a
+// trade, without becoming a different tool each time.
+var COPY = {
+  trade: {
+    apology: 'We are on a job right now.',
+    ask: 'Want to grab a time instead of ringing back?',
+    slots: ['Today 4:00pm','Tomorrow 8:30am','Tomorrow 1:00pm'],
+    verb: 'Booked',
+    confirmTail: 'has the job in the diary'
+  },
+  restaurant: {
+    apology: "We're mid-service right now.",
+    ask: 'Want a table instead of waiting on hold?',
+    slots: ['Tonight 7:00pm','Tonight 8:30pm','Tomorrow 7:00pm'],
+    verb: 'Table booked',
+    confirmTail: 'has you down'
+  },
+  medical: {
+    apology: "We're with another patient right now.",
+    ask: 'Want to lock in a time instead of waiting?',
+    slots: ['Today 3:30pm','Tomorrow 9:00am','Tomorrow 2:00pm'],
+    verb: 'Appointment booked',
+    confirmTail: 'has it in the schedule'
+  },
+  creator: {
+    apology: "We're recording right now.",
+    ask: 'Want to grab a slot instead of playing phone tag?',
+    slots: ['Today 5:00pm','Tomorrow 10:00am','Tomorrow 4:00pm'],
+    verb: "You're booked",
+    confirmTail: 'has it saved'
+  }
+};
+var C = COPY[TYPE] || COPY.trade;
+
 document.getElementById('bizname').textContent = BIZ;
 document.getElementById('initials').textContent = BIZ.trim().charAt(0).toUpperCase() || 'B';
 document.title = 'Missed call, answered — ' + BIZ;
@@ -145,7 +194,11 @@ document.getElementById('sub').textContent = 'Watch what happens when nobody at 
 
 var msgs=document.getElementById('msgs'), call=document.getElementById('call'),
     thread=document.getElementById('thread'), ring=document.getElementById('ring'),
-    missedtxt=document.getElementById('missedtxt'), timers=[];
+    missedtxt=document.getElementById('missedtxt'), timers=[],
+    nameInput=document.getElementById('callername'),
+    callerDisplay=document.getElementById('callername_display'),
+    callerAvatar=document.getElementById('calleravatar');
+
 function at(ms,fn){timers.push(setTimeout(fn,ms));}
 function step(n){for(var i=1;i<=4;i++){document.getElementById('s'+i).classList.toggle('on', i<=n);}}
 function bubble(cls,html,delay){
@@ -154,25 +207,31 @@ function bubble(cls,html,delay){
 }
 function typing(){var t=document.createElement('div');t.className='typing';t.innerHTML='<i></i><i></i><i></i>';
   msgs.appendChild(t);msgs.scrollTop=msgs.scrollHeight;return t;}
+function esc(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML;}
 
 function run(){
   timers.forEach(clearTimeout); timers=[]; msgs.innerHTML='';
   call.classList.remove('gone'); thread.classList.remove('on');
   missedtxt.classList.remove('on'); ring.textContent='calling…'; step(1);
 
+  var callerName = nameInput.value.trim();
+  callerDisplay.textContent = callerName || 'Unknown';
+  callerAvatar.textContent = callerName ? callerName.charAt(0).toUpperCase() : '?';
+  var possessive = callerName ? 'your number' : 'your number';
+
   at(900,function(){ring.textContent='ringing…';});
   at(2400,function(){ring.textContent='still ringing…';});
   at(3900,function(){ring.textContent='';missedtxt.classList.add('on');step(2);});
   at(4900,function(){call.classList.add('gone');thread.classList.add('on');step(3);});
   at(5500,function(){var t=typing();
+    var greet = callerName ? 'Sorry we missed you, '+esc(callerName)+'! This is <b>'+esc(BIZ)+'</b>. '+C.apology
+                            : 'Sorry we missed you! This is <b>'+esc(BIZ)+'</b>. '+C.apology;
     at(1200,function(){t.remove();
-      bubble('them','Sorry we missed you! This is <b>'+BIZ+'</b>. We are on a job right now.');
-      at(700,function(){bubble('them','Want to grab a time instead of ringing back?');
+      bubble('them',greet);
+      at(700,function(){bubble('them',C.ask);
         at(700,function(){
           var w=bubble('them','<div class="slots">'+
-            '<button class="slot">Today 4:00pm</button>'+
-            '<button class="slot">Tomorrow 8:30am</button>'+
-            '<button class="slot">Tomorrow 1:00pm</button></div>');
+            C.slots.map(function(s){return '<button class="slot">'+s+'</button>';}).join('')+'</div>');
           w.querySelectorAll('.slot').forEach(function(b){
             b.addEventListener('click',function(){
               w.querySelectorAll('.slot').forEach(function(x){x.disabled=true;x.style.opacity=.35;});
@@ -180,8 +239,8 @@ function run(){
               var t2=typing();
               setTimeout(function(){t2.remove();
                 bubble('them','<div class="confirm"><span class="tick">&#10003;</span>'+
-                  '<b>Booked for '+b.textContent.toLowerCase()+'.</b><br>'+
-                  BIZ+' has the job in the diary and your number on it. No callback needed.</div>');
+                  '<b>'+C.verb+' for '+b.textContent.toLowerCase()+'.</b><br>'+
+                  esc(BIZ)+' '+C.confirmTail+', and '+possessive+' on it. No callback needed.</div>');
                 step(4);},1100);
             });
           });
@@ -191,6 +250,7 @@ function run(){
   });
 }
 document.getElementById('play').addEventListener('click',run);
+nameInput.addEventListener('keydown',function(e){if(e.key==='Enter'){run();}});
 // Safety net: CSS animations do not run in a throttled or background tab.
 // Without this a visitor who opened the link in a background tab sees an empty phone.
 setInterval(function(){
