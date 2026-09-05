@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>7.28 seconds before your first cut</title>
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+<link href="https://api.fontshare.com/v2/css?f%5B%5D=satoshi@400,500,700,900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0A0A0F; --panel:#121218; --line:#23232c;
+    --text:#ECECF1; --mute:#8B90A0; --mox:#00ECC2; --warm:#FF8A3D;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--ink);color:var(--text);
+    font-family:"Satoshi","Helvetica Neue",Arial,sans-serif;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:860px;margin:0 auto;padding:56px 22px 90px}
+  .kicker{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--mute);margin:0 0 14px}
+  h1{font-size:clamp(30px,5.4vw,52px);line-height:1.04;font-weight:900;margin:0 0 16px;letter-spacing:-.02em}
+  .sub{font-size:17px;line-height:1.6;color:var(--mute);margin:0 0 40px;max-width:62ch}
+  .stage{position:relative;border:1px solid var(--line);border-radius:18px;background:var(--panel);
+    overflow:hidden;min-height:330px;display:flex;align-items:center;justify-content:center;
+    cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent}
+  .stage:focus-visible{outline:2px solid var(--mox);outline-offset:3px}
+  .frame{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;
+    gap:16px;padding:26px;text-align:center;transition:opacity .18s ease}
+  .hold{background:
+      radial-gradient(120% 90% at 50% 20%, #1b1b22 0%, #101015 60%, #0b0b10 100%);}
+  .head{width:112px;height:112px;border-radius:50%;background:#2a2a34;position:relative;
+    box-shadow:0 0 0 1px #33333f inset;animation:breathe 3.6s ease-in-out infinite}
+  .head::after{content:"";position:absolute;left:50%;top:62%;width:46px;height:10px;border-radius:6px;
+    background:#3a3a46;transform:translateX(-50%);animation:talk 1.5s steps(3) infinite}
+  @keyframes breathe{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-3px) scale(1.012)}}
+  @keyframes talk{0%,100%{height:6px}50%{height:14px}}
+  .timer{font-variant-numeric:tabular-nums;font-weight:900;font-size:clamp(42px,10vw,80px);
+    letter-spacing:-.03em;line-height:1}
+  .hint{font-size:14px;color:var(--mute)}
+  .kbd{display:inline-block;border:1px solid var(--line);border-radius:6px;padding:2px 8px;
+    background:#191920;color:var(--text);font-size:12px;font-weight:700}
+  .cutflash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none}
+  .cutflash.go{animation:flash .34s ease-out}
+  @keyframes flash{0%{opacity:.92}100%{opacity:0}}
+  .cuts{position:absolute;inset:0;display:grid;grid-template-columns:repeat(4,1fr);gap:4px;padding:14px;opacity:0}
+  .cuts.go{opacity:1}
+  .cuts i{border-radius:8px;background:#1c1c24;display:block;animation:pop .42s ease both}
+  .cuts.go i:nth-child(1){animation-delay:.00s} .cuts.go i:nth-child(2){animation-delay:.09s}
+  .cuts.go i:nth-child(3){animation-delay:.18s} .cuts.go i:nth-child(4){animation-delay:.27s}
+  .cuts.go i:nth-child(5){animation-delay:.36s} .cuts.go i:nth-child(6){animation-delay:.45s}
+  .cuts.go i:nth-child(7){animation-delay:.54s} .cuts.go i:nth-child(8){animation-delay:.63s}
+  @keyframes pop{from{transform:scale(.86);opacity:0;background:#242430}to{transform:scale(1);opacity:1}}
+  .result{margin:26px 0 0;border:1px solid var(--line);border-radius:16px;background:var(--panel);padding:24px}
+  .row{display:flex;align-items:center;gap:14px;margin:0 0 16px}
+  .row:last-child{margin-bottom:0}
+  .lab{width:132px;flex:none;font-size:13px;color:var(--mute)}
+  .bar{flex:1;height:14px;border-radius:8px;background:#191920;overflow:hidden}
+  .bar span{display:block;height:100%;width:0;border-radius:8px;transition:width 1.1s cubic-bezier(.2,.9,.2,1)}
+  .val{width:74px;flex:none;text-align:right;font-weight:800;font-variant-numeric:tabular-nums}
+  .b-you span{background:var(--mox)} .b-them span{background:var(--warm)} .b-tight span{background:#4a4a58}
+  h2{font-size:22px;font-weight:900;margin:44px 0 10px;letter-spacing:-.01em}
+  p{font-size:16px;line-height:1.65;color:var(--mute);margin:0 0 14px;max-width:64ch}
+  .tab{width:100%;border-collapse:collapse;margin:14px 0 0;font-size:14px}
+  .tab th,.tab td{text-align:left;padding:11px 10px;border-bottom:1px solid var(--line)}
+  .tab th{color:var(--mute);font-weight:500;font-size:12px;letter-spacing:.06em;text-transform:uppercase}
+  .tab td:last-child,.tab th:last-child{text-align:right;font-variant-numeric:tabular-nums}
+  .foot{margin:52px 0 0;padding-top:22px;border-top:1px solid var(--line);font-size:14px;color:var(--mute)}
+  .foot b{color:var(--text)}
+  a{color:var(--mox);text-decoration:underline}
+  .note{font-size:13px;color:var(--mute);margin-top:10px}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <p class="kicker">For Mous &middot; from MotionOx</p>
+  <h1>Your best video waits 7.28 seconds<br>before it cuts.</h1>
+  <p class="sub">Not an opinion. We measured the first cut on your three most recent uploads.
+     Before we show you the number, do it yourself: watch the frame below and press the moment
+     <em>you</em> would have cut away.</p>
+
+  <div class="stage" id="stage" tabindex="0" role="button" aria-label="Press when you would cut">
+    <div class="frame hold" id="hold">
+      <div class="head" aria-hidden="true"></div>
+      <div class="timer" id="t">0.00s</div>
+      <div class="hint">Press <span class="kbd">SPACE</span> or tap when you would cut</div>
+    </div>
+    <div class="cuts" id="cuts" aria-hidden="true">
+      <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+    </div>
+    <div class="cutflash" id="flash" aria-hidden="true"></div>
+  </div>
+
+  <div class="result" id="result" hidden>
+    <div class="row"><div class="lab">You cut at</div>
+      <div class="bar b-you"><span id="byou"></span></div><div class="val" id="vyou">0.00s</div></div>
+    <div class="row"><div class="lab">Your Pixel 11 video</div>
+      <div class="bar b-them"><span id="bthem"></span></div><div class="val">7.28s</div></div>
+    <div class="row"><div class="lab">Your own shot rhythm</div>
+      <div class="bar b-tight"><span id="btight"></span></div><div class="val">2.14s</div></div>
+    <p class="note" id="verdict"></p>
+  </div>
+
+  <h2>What we measured</h2>
+  <p>Your three most recent uploads on your own channel. First cut is the time from frame one to the
+     first change of shot. Average shot length is measured across the opening thirty seconds.</p>
+
+  <table class="tab">
+    <tr><th>Upload</th><th>Views</th><th>First cut</th><th>Avg shot</th></tr>
+    <tr><td>Google Pixel 11 Cases, A Detailed Guide</td><td>17,000</td><td>7.28s</td><td>2.14s</td></tr>
+    <tr><td>Mous Is Crowdfunding, 2026</td><td>5,300</td><td>4.48s</td><td>3.75s</td></tr>
+    <tr><td>How To Apply Your Samsung S26 Screen Protector</td><td>6,200</td><td>3.40s</td><td>2.50s</td></tr>
+  </table>
+
+  <h2>The part worth two minutes</h2>
+  <p>Your most watched video of the three has the slowest opening of the three. It holds a single
+     talking head for 7.28 seconds before anything changes.</p>
+  <p>And once it gets going, the same video cuts every 2.14 seconds. The rhythm is already there.
+     It just starts late.</p>
+  <p>Across the three, your opening averages 5.05 seconds. That is the slowest opening of the six
+     brands we measured for this exercise, and it is the one thing on this page that is quick to change.</p>
+
+  <div class="foot">
+    <b>MotionOx</b>, an edit room.<br>
+    This page was built for Mous and nobody else. No footage of yours was used, and nothing here is
+    a guess: every number came from your own uploads.<br>
+    <a href="https://motionox.co">motionox.co</a>
+  </div>
+</div>
+
+<script>
+(function(){
+  var stage=document.getElementById('stage'), t=document.getElementById('t'),
+      hold=document.getElementById('hold'), cuts=document.getElementById('cuts'),
+      flash=document.getElementById('flash'), res=document.getElementById('result'),
+      vyou=document.getElementById('vyou'), byou=document.getElementById('byou'),
+      bthem=document.getElementById('bthem'), btight=document.getElementById('btight'),
+      verdict=document.getElementById('verdict');
+  var start=null, raf=null, done=false, MAX=12;
+
+  // 🛑 start is set in begin(), NEVER inside tick. A page opened in a BACKGROUND tab never
+  // runs requestAnimationFrame, so a start set here stays null, the timer sits at 0.00 and
+  // the visitor's first press does nothing at all. Measured, not guessed.
+  function tick(){
+    var s=(performance.now()-start)/1000;
+    if(s>MAX){ fire(MAX); return; }
+    t.textContent=s.toFixed(2)+'s';
+    raf=requestAnimationFrame(tick);
+  }
+  function fire(sec){
+    if(done) return; done=true;
+    cancelAnimationFrame(raf);
+    var s = (sec===undefined) ? (performance.now()-(start===null?performance.now():start))/1000 : sec;
+    t.textContent=s.toFixed(2)+'s';
+    flash.classList.add('go');
+    setTimeout(function(){ hold.style.opacity='0'; cuts.classList.add('go'); },140);
+
+    res.hidden=false;
+    vyou.textContent=s.toFixed(2)+'s';
+    // 7.28 is the longest value on the chart, so it anchors 100%
+    var scale=function(v){ return Math.max(4, Math.min(100, (v/7.28)*100)) + '%'; };
+    setTimeout(function(){
+      byou.style.width=scale(s); bthem.style.width='100%'; btight.style.width=scale(2.14);
+    },60);
+
+    verdict.textContent = s < 7.28
+      ? 'You cut ' + (7.28-s).toFixed(2) + ' seconds earlier than your own best performing video does. Most viewers do.'
+      : 'You waited longer than the video does. Most people do not, and the ones who do not are the ones scrolling.';
+    res.scrollIntoView({behavior:'smooth', block:'nearest'});
+  }
+  function begin(){
+    if(start!==null || done) return;      // one start only, never a stack of them
+    start=performance.now();
+    raf=requestAnimationFrame(tick);
+  }
+
+  stage.addEventListener('click', function(){ if(start===null){begin();} else {fire();} });
+  stage.addEventListener('keydown', function(e){
+    if(e.code==='Space'||e.key===' '||e.key==='Enter'){ e.preventDefault();
+      if(start===null){begin();} else {fire();} }
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.code==='Space'&&document.activeElement!==stage){ e.preventDefault();
+      if(start===null){begin();} else {fire();} }
+  });
+  // start counting as soon as it is actually on screen
+  if('IntersectionObserver' in window){
+    new IntersectionObserver(function(en){ if(en[0].isIntersecting){ begin(); } },{threshold:.6}).observe(stage);
+  } else { begin(); }
+})();
+</script>
+</body>
+</html>
