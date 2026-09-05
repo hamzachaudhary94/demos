@@ -87,7 +87,12 @@ button.ghost{background:transparent;color:var(--ink);border:1px solid var(--line
   padding-top:12px;border-top:2px solid rgba(255,255,255,.09);transition:.35s}
 .step.on{color:var(--green);border-top-color:var(--green)}
 @media (max-width:400px){.phone{padding:10px;border-radius:34px}.screen{border-radius:26px}h1{font-size:23px}.sub{font-size:13px;margin:8px 0 16px}}
-@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+  .b{opacity:1!important;transform:none!important}
+  .tick{transform:none!important}
+  .call.gone{opacity:0!important}
+}
 </style>
 </head>
 <body>
@@ -186,6 +191,13 @@ function run(){
   });
 }
 document.getElementById('play').addEventListener('click',run);
+// Safety net: CSS animations do not run in a throttled or background tab.
+// Without this a visitor who opened the link in a background tab sees an empty phone.
+setInterval(function(){
+  document.querySelectorAll('#msgs .b').forEach(function(b){
+    if(getComputedStyle(b).opacity==='0'){ b.style.opacity='1'; b.style.transform='none'; }
+  });
+},1200);
 run();
 </script>
 </body>
