@@ -149,7 +149,18 @@ Nothing typed here is sent or stored anywhere. Built to show one idea: a missed 
 
 <script>
 var BIZ = new URLSearchParams(location.search).get('biz') || 'Your business';
-var TYPE = (new URLSearchParams(location.search).get('type') || 'trade').toLowerCase();
+var TYPE = (new URLSearchParams(location.search).get('type') || '').toLowerCase();
+
+// 🩸 6 Sep 2026: batch 5 was drafted just before the type= variants existed, so its
+// links carry no type= and fall back to 'trade'. That's wrong for a dental clinic.
+// The link is already sent and cannot be edited, but the page is stateless and reads
+// the query string fresh on every load, so a recipient who clicks NOW can still see
+// the right wording. Exact-name fallback for already-sent links only, never a
+// substitute for putting type= in the URL at draft time going forward.
+var SENT_TYPE_FALLBACK = {
+  'Hamilton Dental Emergency Centre': 'medical'
+};
+if (!TYPE) { TYPE = (SENT_TYPE_FALLBACK[BIZ] || 'trade').toLowerCase(); }
 
 // Same mechanic every time: ring, miss, text back, pick a slot, confirm.
 // Only the WORDING changes per business type, so the surface fits a
