@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Your three uploads, beating at their real speed</title>
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+<link href="https://api.fontshare.com/v2/css?f%5B%5D=satoshi@400,500,700,900&display=swap" rel="stylesheet">
+<style>
+  :root{--ink:#0A0A0F;--panel:#121218;--line:#23232c;--text:#ECECF1;--mute:#8B90A0;
+        --mox:#00ECC2;--warm:#FF8A3D;--cool:#7C8CFF}
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--ink);color:var(--text);
+    font-family:"Satoshi","Helvetica Neue",Arial,sans-serif;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:900px;margin:0 auto;padding:56px 22px 90px}
+  .kicker{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--mute);margin:0 0 14px}
+  h1{font-size:clamp(30px,5.2vw,50px);line-height:1.05;font-weight:900;margin:0 0 16px;letter-spacing:-.02em}
+  .sub{font-size:17px;line-height:1.6;color:var(--mute);margin:0 0 34px;max-width:64ch}
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  @media (max-width:720px){.grid{grid-template-columns:1fr}}
+  .card{border:1px solid var(--line);border-radius:16px;background:var(--panel);padding:20px 18px 22px;
+    cursor:pointer;transition:border-color .2s,transform .2s;text-align:center;
+    -webkit-tap-highlight-color:transparent}
+  .card:hover,.card.on{border-color:#3a3a48;transform:translateY(-2px)}
+  .card:focus-visible{outline:2px solid var(--mox);outline-offset:3px}
+  .pulse{width:96px;height:96px;margin:6px auto 16px;border-radius:50%;position:relative}
+  .pulse i{position:absolute;inset:0;border-radius:50%;background:currentColor;opacity:.16}
+  .pulse b{position:absolute;inset:26%;border-radius:50%;background:currentColor;
+    animation-name:beat;animation-timing-function:cubic-bezier(.2,.85,.3,1);animation-iteration-count:infinite}
+  @keyframes beat{0%{transform:scale(.72);opacity:.6}18%{transform:scale(1.18);opacity:1}100%{transform:scale(.72);opacity:.6}}
+  .c1{color:var(--cool)} .c2{color:var(--mox)} .c3{color:var(--warm)}
+  .name{font-size:13px;line-height:1.45;color:var(--text);font-weight:700;margin:0 0 10px;min-height:38px}
+  .num{font-variant-numeric:tabular-nums;font-weight:900;font-size:26px;letter-spacing:-.02em;margin:0}
+  .cap{font-size:12px;color:var(--mute);margin:2px 0 0}
+  .split{border-top:1px solid var(--line);margin:12px 0 0;padding-top:10px}
+  .bignum{font-variant-numeric:tabular-nums;font-weight:900;font-size:20px}
+  .hintbar{margin:18px 0 0;font-size:14px;color:var(--mute);text-align:center}
+  h2{font-size:22px;font-weight:900;margin:46px 0 10px;letter-spacing:-.01em}
+  p{font-size:16px;line-height:1.65;color:var(--mute);margin:0 0 14px;max-width:66ch}
+  .tab{width:100%;border-collapse:collapse;margin:16px 0 0;font-size:14px}
+  .tab th,.tab td{text-align:left;padding:11px 10px;border-bottom:1px solid var(--line)}
+  .tab th{color:var(--mute);font-weight:500;font-size:12px;letter-spacing:.06em;text-transform:uppercase}
+  .tab td+td,.tab th+th{text-align:right;font-variant-numeric:tabular-nums}
+  .callout{border:1px solid var(--line);border-left:3px solid var(--mox);border-radius:0 12px 12px 0;
+    background:var(--panel);padding:18px 20px;margin:22px 0 0}
+  .callout p{margin:0;color:var(--text);font-size:16px}
+  .foot{margin:52px 0 0;padding-top:22px;border-top:1px solid var(--line);font-size:14px;color:var(--mute)}
+  .foot b{color:var(--text)}
+  a{color:var(--mox);text-decoration:underline}
+  @media (prefers-reduced-motion:reduce){.pulse b{animation:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <p class="kicker">For Gozney &middot; from MotionOx</p>
+  <h1>Your three uploads, beating at their real cutting speed.</h1>
+  <p class="sub">Nothing here is an opinion. We measured the average shot length across the first
+     thirty seconds of your three most recent uploads, and each circle below is pulsing at that
+     exact rate. Tap one to hold it.</p>
+
+  <div class="grid" id="grid">
+    <div class="card" tabindex="0" role="button" data-i="0">
+      <div class="pulse c1"><i></i><b style="animation-duration:1.11s"></b></div>
+      <p class="name">Why Everyone&#39;s Talking About London&#39;s Pizza Scene</p>
+      <p class="num">1.11s</p><p class="cap">average shot</p>
+      <div class="split"><span class="bignum">229,000</span> <span class="cap">views</span></div>
+    </div>
+    <div class="card" tabindex="0" role="button" data-i="1">
+      <div class="pulse c2"><i></i><b style="animation-duration:0.86s"></b></div>
+      <p class="name">Pizza With Frank: London Calling, trailer</p>
+      <p class="num">0.86s</p><p class="cap">average shot</p>
+      <div class="split"><span class="bignum">5,500</span> <span class="cap">views</span></div>
+    </div>
+    <div class="card" tabindex="0" role="button" data-i="2">
+      <div class="pulse c3"><i></i><b style="animation-duration:2.14s"></b></div>
+      <p class="name">Why Do I Need A Pizza Oven?</p>
+      <p class="num">2.14s</p><p class="cap">average shot</p>
+      <div class="split"><span class="bignum">11,000</span> <span class="cap">views</span></div>
+    </div>
+  </div>
+  <p class="hintbar" id="hint">Three different rhythms on one channel. Tap a card to pause the others.</p>
+
+  <h2>What we measured</h2>
+  <p>Your three most recent uploads on your own channel. Average shot length is measured across
+     the opening thirty seconds. Loudness is EBU R128 integrated.</p>
+
+  <table class="tab">
+    <tr><th>Upload</th><th>Views</th><th>First cut</th><th>Avg shot</th><th>Loudness</th></tr>
+    <tr><td>London&#39;s Pizza Scene</td><td>229,000</td><td>0.84s</td><td>1.11s</td><td>-12.9 LUFS</td></tr>
+    <tr><td>Pizza With Frank trailer</td><td>5,500</td><td>1.32s</td><td>0.86s</td><td>-12.7 LUFS</td></tr>
+    <tr><td>Why Do I Need A Pizza Oven?</td><td>11,000</td><td>3.00s</td><td>2.14s</td><td>-14.3 LUFS</td></tr>
+  </table>
+
+  <h2>The honest read</h2>
+  <p>Your sound is tight. Across the three, loudness varies by just 1.6 LU, so nobody is
+     reaching for the volume between your videos. Your openings are quick too, 1.72 seconds to
+     the first cut on average.</p>
+
+  <div class="callout">
+    <p>Your loudness varies by 1.6 LU across the three. Your shot rhythm varies by two and a half
+       times, from 0.86s to 2.14s. One of those is under control and the other is not.</p>
+  </div>
+
+  <p>And to be straight with you, cutting rate is not a score. A trailer should cut faster than
+     an explainer, so part of that spread is the format doing its job, not a fault. Your
+     229,000 view video sits between the two extremes, so nothing here says quicker is better.</p>
+  <p>The narrower question is whether that spread is a decision each time or just what came out.
+     Sound clearly is a decision on this channel. Rhythm reads like it is being set per video,
+     by whoever happens to be cutting, and that is the part an edit room takes off you.</p>
+
+  <div class="foot">
+    <b>MotionOx</b>, an edit room.<br>
+    Built for Gozney alone. No footage of yours was used, and every number on this page
+    came from your own uploads.<br>
+    <a href="https://motionox.co">motionox.co</a>
+  </div>
+</div>
+
+<script>
+(function(){
+  var cards=[].slice.call(document.querySelectorAll('.card')), hint=document.getElementById('hint'), solo=-1;
+  function apply(){
+    cards.forEach(function(c,i){
+      var dot=c.querySelector('.pulse b');
+      var off=(solo!==-1 && i!==solo);
+      dot.style.animationPlayState=off?'paused':'running';
+      c.style.opacity=off?'0.42':'1';
+      c.classList.toggle('on', solo===i);
+    });
+    hint.textContent = solo===-1
+      ? 'Three different rhythms on one channel. Tap a card to pause the others.'
+      : 'Watch it alone for a moment, then tap it again to bring the others back.';
+  }
+  cards.forEach(function(c,i){
+    function pick(){ solo = (solo===i) ? -1 : i; apply(); }
+    c.addEventListener('click', pick);
+    c.addEventListener('keydown', function(e){
+      if(e.key==='Enter'||e.key===' '||e.code==='Space'){ e.preventDefault(); pick(); }
+    });
+  });
+  apply();
+})();
+</script>
+</body>
+</html>
