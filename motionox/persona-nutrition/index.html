@@ -20,6 +20,11 @@
     font-family:'Satoshi',system-ui,sans-serif;
     -webkit-font-smoothing:antialiased;
   }
+  .byline{
+    background:var(--ink);color:var(--bg);text-align:center;
+    font-size:13px;font-weight:700;letter-spacing:.02em;padding:10px 16px;
+  }
+  .byline b{color:var(--lime)}
   .wrap{max-width:720px;margin:0 auto;padding:56px 24px 80px}
   h1{font-weight:900;font-size:clamp(28px,5vw,44px);line-height:1.08;margin:0 0 18px}
   h1 span{color:var(--muted)}
@@ -74,6 +79,7 @@
 </style>
 </head>
 <body>
+<div class="byline"><b>MotionOx</b>, a demo built for Persona Nutrition, not their own site.</div>
 <div class="wrap">
   <span class="kicker">Measured off your own homepage, 6 Sep 2026</span>
   <h1>Your most expensive testimonial <span>looks the worst.</span></h1>
