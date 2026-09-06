@@ -67,6 +67,13 @@
   .foot b{color:var(--text)}
   a{color:var(--mox);text-decoration:underline}
   .note{font-size:13px;color:var(--mute);margin-top:10px}
+  .again{font:inherit;font-weight:700;font-size:14px;color:var(--ink);background:var(--mox);
+    border:none;border-radius:8px;padding:10px 16px;cursor:pointer;margin-top:4px}
+  .again:hover{opacity:.9}
+  .feelrow{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:18px}
+  .feelstage{height:64px;border:1px solid var(--line);border-radius:12px;background:#0d0d12;
+    display:flex;align-items:center;padding:0 20px;overflow:hidden}
+  .feelDot{width:22px;height:22px;border-radius:50%;background:var(--mox);flex:none}
   @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -94,11 +101,26 @@
   <div class="result" id="result" hidden>
     <div class="row"><div class="lab">You cut at</div>
       <div class="bar b-you"><span id="byou"></span></div><div class="val" id="vyou">0.00s</div></div>
-    <div class="row"><div class="lab">Your Pixel 11 video</div>
+    <div class="row"><div class="lab">Pixel 11 Cases</div>
       <div class="bar b-them"><span id="bthem"></span></div><div class="val">7.28s</div></div>
+    <div class="row"><div class="lab">Mous Is Crowdfunding</div>
+      <div class="bar b-them"><span id="bthem2"></span></div><div class="val">4.48s</div></div>
+    <div class="row"><div class="lab">S26 Screen Protector</div>
+      <div class="bar b-them"><span id="bthem3"></span></div><div class="val">3.40s</div></div>
     <div class="row"><div class="lab">Your own shot rhythm</div>
       <div class="bar b-tight"><span id="btight"></span></div><div class="val">2.14s</div></div>
     <p class="note" id="verdict"></p>
+    <p class="note"><button class="again" id="again">Try again</button></p>
+  </div>
+
+  <div class="result" id="feel" hidden>
+    <div class="lab" style="width:auto;margin-bottom:14px">Feel the gap instead of reading it. Same beat, two speeds.</div>
+    <div class="feelrow">
+      <button class="again" id="feelSlow">Pulse at 7.28s</button>
+      <button class="again" id="feelFast">Pulse at 2.14s</button>
+      <span class="hint" id="feelState"></span>
+    </div>
+    <div class="feelstage" id="feelStage" aria-hidden="true"><div class="feelDot" id="feelDot"></div></div>
   </div>
 
   <h2>What we measured</h2>
@@ -135,8 +157,12 @@
       flash=document.getElementById('flash'), res=document.getElementById('result'),
       vyou=document.getElementById('vyou'), byou=document.getElementById('byou'),
       bthem=document.getElementById('bthem'), btight=document.getElementById('btight'),
-      verdict=document.getElementById('verdict');
-  var start=null, raf=null, done=false, MAX=12;
+      bthem2=document.getElementById('bthem2'), bthem3=document.getElementById('bthem3'),
+      verdict=document.getElementById('verdict'), again=document.getElementById('again'),
+      feel=document.getElementById('feel'), feelSlow=document.getElementById('feelSlow'),
+      feelFast=document.getElementById('feelFast'), feelDot=document.getElementById('feelDot'),
+      feelState=document.getElementById('feelState');
+  var start=null, raf=null, done=false, MAX=12, feelTimer=null;
 
   // 🛑 start is set in begin(), NEVER inside tick. A page opened in a BACKGROUND tab never
   // runs requestAnimationFrame, so a start set here stays null, the timer sits at 0.00 and
@@ -160,29 +186,68 @@
     // 7.28 is the longest value on the chart, so it anchors 100%
     var scale=function(v){ return Math.max(4, Math.min(100, (v/7.28)*100)) + '%'; };
     setTimeout(function(){
-      byou.style.width=scale(s); bthem.style.width='100%'; btight.style.width=scale(2.14);
+      byou.style.width=scale(s); bthem.style.width='100%';
+      bthem2.style.width=scale(4.48); bthem3.style.width=scale(3.40);
+      btight.style.width=scale(2.14);
     },60);
 
-    verdict.textContent = s < 7.28
-      ? 'You cut ' + (7.28-s).toFixed(2) + ' seconds earlier than your own best performing video does. Most viewers do.'
-      : 'You waited longer than the video does. Most people do not, and the ones who do not are the ones scrolling.';
+    var beat = s<7.28 ? (7.28-s).toFixed(2)+' seconds earlier than the slowest of the three'
+                       : (s-7.28).toFixed(2)+' seconds later than the slowest of the three, and most people do not wait that long';
+    verdict.textContent = 'You cut ' + beat + '. Against the fastest of the three (3.40s), you cut '
+      + (s<3.40 ? (3.40-s).toFixed(2)+'s earlier.' : (s-3.40).toFixed(2)+'s later.');
     res.scrollIntoView({behavior:'smooth', block:'nearest'});
+    feel.hidden=false;
   }
   function begin(){
     if(start!==null || done) return;      // one start only, never a stack of them
     start=performance.now();
     raf=requestAnimationFrame(tick);
   }
+  function reset(){
+    stopFeel();
+    start=null; done=false; raf=null;
+    t.textContent='0.00s';
+    flash.classList.remove('go');
+    cuts.classList.remove('go');
+    hold.style.opacity='1';
+    res.hidden=true; feel.hidden=true;
+    stage.scrollIntoView({behavior:'smooth', block:'nearest'});
+    begin();
+  }
 
-  stage.addEventListener('click', function(){ if(start===null){begin();} else {fire();} });
+  stage.addEventListener('click', function(){ if(start===null){begin();} else if(!done){fire();} });
   stage.addEventListener('keydown', function(e){
     if(e.code==='Space'||e.key===' '||e.key==='Enter'){ e.preventDefault();
-      if(start===null){begin();} else {fire();} }
+      if(start===null){begin();} else if(!done){fire();} }
   });
   document.addEventListener('keydown', function(e){
-    if(e.code==='Space'&&document.activeElement!==stage){ e.preventDefault();
+    if(e.code==='Space'&&document.activeElement!==stage&&!done){ e.preventDefault();
       if(start===null){begin();} else {fire();} }
   });
+  again.addEventListener('click', reset);
+
+  // 🛑 FEEL THE RHYTHM. Same visual language as the cut animation (a pulsing dot), no new
+  // footage claim, no invented number: 7.28s and 2.14s are the same two measured values
+  // already on the page, just made physical instead of read.
+  function stopFeel(){
+    if(feelTimer){ clearInterval(feelTimer); feelTimer=null; }
+    feelDot.style.transition='none'; feelDot.style.transform='scale(1)';
+  }
+  function pulseAt(sec, label){
+    stopFeel();
+    feelState.textContent = 'pulsing every ' + sec.toFixed(2) + 's';
+    var big=false;
+    function beat(){
+      big=!big;
+      feelDot.style.transition='transform '+(sec*0.35)+'s ease-out, background-color '+(sec*0.35)+'s ease-out';
+      feelDot.style.transform = big ? 'scale(2.4)' : 'scale(1)';
+      feelDot.style.backgroundColor = big ? '#FF8A3D' : '';
+    }
+    beat();
+    feelTimer=setInterval(beat, sec*1000);
+  }
+  feelSlow.addEventListener('click', function(){ pulseAt(7.28); });
+  feelFast.addEventListener('click', function(){ pulseAt(2.14); });
   // start counting as soon as it is actually on screen
   if('IntersectionObserver' in window){
     new IntersectionObserver(function(en){ if(en[0].isIntersecting){ begin(); } },{threshold:.6}).observe(stage);

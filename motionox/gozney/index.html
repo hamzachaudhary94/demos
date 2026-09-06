@@ -49,6 +49,12 @@
   .foot b{color:var(--text)}
   a{color:var(--mox);text-decoration:underline}
   @media (prefers-reduced-motion:reduce){.pulse b{animation:none!important}}
+  .recut{margin:16px 0 0;text-align:center}
+  .recutrow{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+  .rbtn{font:inherit;font-size:13px;font-weight:700;color:var(--text);background:var(--panel);
+    border:1px solid var(--line);border-radius:20px;padding:9px 16px;cursor:pointer}
+  .rbtn:hover{border-color:#3a3a48}
+  .rbtn.active{border-color:var(--mox);color:var(--mox)}
 </style>
 </head>
 <body>
@@ -81,6 +87,10 @@
     </div>
   </div>
   <p class="hintbar" id="hint">Three different rhythms on one channel. Tap a card to pause the others.</p>
+  <div class="recut" id="recut" hidden>
+    <p class="hintbar" style="margin:0 0 10px">Same upload. Feel it cut at one of the other two rhythms instead.</p>
+    <div class="recutrow" id="recutRow"></div>
+  </div>
 
   <h2>What we measured</h2>
   <p>Your three most recent uploads on your own channel. Average shot length is measured across
@@ -121,6 +131,34 @@
 <script>
 (function(){
   var cards=[].slice.call(document.querySelectorAll('.card')), hint=document.getElementById('hint'), solo=-1;
+  var recut=document.getElementById('recut'), recutRow=document.getElementById('recutRow');
+  // The three MEASURED rates, in card order. Recutting only ever swaps between these three,
+  // never invents a fourth, and always says whose rate it borrowed.
+  var RATES=[1.11,0.86,2.14];
+
+  function nativeDot(i){ return cards[i].querySelector('.pulse b'); }
+
+  function buildRecut(i){
+    recutRow.innerHTML='';
+    RATES.forEach(function(r,ri){
+      if(ri===i) return; // its own rhythm is not an option, that is the resting state
+      var b=document.createElement('button');
+      b.className='rbtn'; b.type='button';
+      b.textContent='Cut at '+r.toFixed(2)+'s';
+      b.addEventListener('click', function(){ setRate(i, r, b); });
+      recutRow.appendChild(b);
+    });
+    var reset=document.createElement('button');
+    reset.className='rbtn active'; reset.type='button'; reset.textContent='Its own '+RATES[i].toFixed(2)+'s';
+    reset.addEventListener('click', function(){ setRate(i, RATES[i], reset); });
+    recutRow.insertBefore(reset, recutRow.firstChild);
+  }
+  function setRate(i, sec, btn){
+    nativeDot(i).style.animationDuration = sec.toFixed(2)+'s';
+    [].slice.call(recutRow.children).forEach(function(b){ b.classList.remove('active'); });
+    btn.classList.add('active');
+  }
+
   function apply(){
     cards.forEach(function(c,i){
       var dot=c.querySelector('.pulse b');
@@ -128,10 +166,16 @@
       dot.style.animationPlayState=off?'paused':'running';
       c.style.opacity=off?'0.42':'1';
       c.classList.toggle('on', solo===i);
+      if(solo===-1) dot.style.animationDuration = RATES[i].toFixed(2)+'s'; // always native when not soloed
     });
-    hint.textContent = solo===-1
-      ? 'Three different rhythms on one channel. Tap a card to pause the others.'
-      : 'Watch it alone for a moment, then tap it again to bring the others back.';
+    if(solo===-1){
+      hint.textContent='Three different rhythms on one channel. Tap a card to pause the others.';
+      recut.hidden=true;
+    } else {
+      hint.textContent='Watch it alone for a moment, then tap it again to bring the others back.';
+      buildRecut(solo);
+      recut.hidden=false;
+    }
   }
   cards.forEach(function(c,i){
     function pick(){ solo = (solo===i) ? -1 : i; apply(); }
