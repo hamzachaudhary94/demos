@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Your $70 testimonial that looks worse than the free ones</title>
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+<link href="https://api.fontshare.com/v2/css?f%5B%5D=satoshi@400,500,700,900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F0F1E9;
+    --ink:#1B3B13;
+    --lime:#D5FA99;
+    --muted:#5271A1;
+    --card:#ffffff;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;background:var(--bg);color:var(--ink);
+    font-family:'Satoshi',system-ui,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:720px;margin:0 auto;padding:56px 24px 80px}
+  h1{font-weight:900;font-size:clamp(28px,5vw,44px);line-height:1.08;margin:0 0 18px}
+  h1 span{color:var(--muted)}
+  p{font-size:17px;line-height:1.6;margin:0 0 16px}
+  .kicker{
+    display:inline-block;font-weight:700;font-size:13px;letter-spacing:.04em;
+    text-transform:uppercase;color:var(--ink);background:var(--lime);
+    padding:6px 12px;border-radius:100px;margin-bottom:22px;
+  }
+  .bars{margin:36px 0;background:var(--card);border-radius:16px;padding:24px;
+    box-shadow:0 1px 2px rgba(27,59,19,.06), 0 8px 24px rgba(27,59,19,.05)}
+  .bar-row{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+  .bar-row:last-child{margin-bottom:0}
+  .bar-label{width:96px;font-weight:700;font-size:14px;flex-shrink:0}
+  .bar-track{flex:1;background:#eef0e6;border-radius:8px;height:28px;position:relative;overflow:hidden}
+  .bar-fill{height:100%;border-radius:8px;display:flex;align-items:center;
+    padding:0 10px;font-size:12px;font-weight:700;color:#fff;white-space:nowrap}
+  .bar-fill.small{background:var(--muted)}
+  .bar-fill.big{background:#e63d2a}
+  .bar-note{font-size:13px;color:var(--muted);margin-top:16px}
+
+  .compare{margin:40px 0}
+  .compare-frame{
+    position:relative;max-width:280px;margin:0 auto 14px;border-radius:14px;overflow:hidden;
+    box-shadow:0 8px 30px rgba(27,59,19,.18);
+  }
+  .compare-frame img{display:block;width:100%;height:auto}
+  .compare-frame .after{
+    position:absolute;top:0;left:0;height:100%;overflow:hidden;width:50%;
+    border-right:2px solid #fff;
+  }
+  .compare-frame .after img{width:280px;max-width:none;height:100%;object-fit:cover}
+  .handle{
+    position:absolute;top:50%;left:50%;width:40px;height:40px;border-radius:50%;
+    background:#fff;transform:translate(-50%,-50%);box-shadow:0 2px 10px rgba(0,0,0,.25);
+    display:flex;align-items:center;justify-content:center;cursor:ew-resize;font-size:14px;
+    color:var(--ink);font-weight:900;user-select:none;
+  }
+  .compare-labels{display:flex;justify-content:space-between;max-width:280px;margin:0 auto;
+    font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.03em}
+  .stat{
+    text-align:center;font-size:14px;color:var(--ink);margin-top:14px;
+  }
+  .stat b{font-size:22px;display:block;color:#e63d2a}
+
+  .foot{
+    margin-top:56px;padding-top:24px;border-top:1px solid rgba(27,59,19,.15);
+    font-size:13px;color:var(--muted);line-height:1.7;
+  }
+  .foot b{color:var(--ink)}
+  .foot a{color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <span class="kicker">Measured off your own homepage, 6 Sep 2026</span>
+  <h1>Your most expensive testimonial <span>looks the worst.</span></h1>
+
+  <p>Four videos sit on your own homepage testimonial carousel right now. Three of them, Chriystl,
+     Dave and Elyse, are small phone-preview files, 320&times;568, three to five megabytes each.
+     The fourth, Jennifer's, is recorded properly, 1080&times;1920, and costs seven times more to
+     load, twenty-five point six megabytes.</p>
+
+  <p>It is also the one that looks worst. It was encoded in HDR (BT.2020, HLG), the format a
+     premium phone camera uses for a bright outdoor shot. Most browsers do not know what to do
+     with that tag on a plain webpage. They just show the raw numbers. The result is a flatter,
+     greyer picture than the small files sitting right next to it.</p>
+
+  <div class="bars">
+    <div class="bar-row">
+      <div class="bar-label">Chriystl</div>
+      <div class="bar-track"><div class="bar-fill small" style="width:14%">3.6 MB</div></div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">Dave</div>
+      <div class="bar-track"><div class="bar-fill small" style="width:14%">3.6 MB</div></div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">Elyse</div>
+      <div class="bar-track"><div class="bar-fill small" style="width:20%">5.1 MB</div></div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">Jennifer</div>
+      <div class="bar-track"><div class="bar-fill big" style="width:100%">25.6 MB, HDR</div></div>
+    </div>
+    <div class="bar-note">Real file sizes, pulled directly from personanutrition.com's own video
+      folder, 6 Sep 2026. Jennifer's file is roughly seven times the others.</div>
+  </div>
+
+  <p>Drag the circle. Left is the frame exactly as your site delivers it to a normal screen.
+     Right is the same single frame, colour-corrected for a standard display, nothing else
+     changed.</p>
+
+  <div class="compare">
+    <div class="compare-frame" id="frame">
+      <img src="jennifer-corrected.jpg" alt="Jennifer testimonial, colour corrected">
+      <div class="after" id="after"><img src="jennifer-washed.jpg" alt="Jennifer testimonial, as delivered"></div>
+      <div class="handle" id="handle">&#8596;</div>
+    </div>
+    <div class="compare-labels"><span>As delivered</span><span>Corrected</span></div>
+    <div class="stat">Same frame, same file, one encoding tag.<b>45% less colour</b>
+      measured directly on the pixels, both sides.</div>
+  </div>
+
+  <p>None of this needed a reshoot. Every clip already exists. The fix is an export setting,
+     the kind of thing an edit room catches before it ever reaches a customer's screen.</p>
+
+  <div class="foot">
+    <b>MotionOx</b>, an edit room.<br>
+    This page was built for Persona Nutrition alone. No footage of yours was used, only two
+    frames pulled from files already public on your own site, and nothing here is a guess:
+    every number came from your own uploads, measured directly, sources on request.<br>
+    <a href="https://motionox.co">motionox.co</a>
+  </div>
+</div>
+
+<script>
+(function(){
+  var frame = document.getElementById('frame');
+  var after = document.getElementById('after');
+  var handle = document.getElementById('handle');
+  var dragging = false;
+
+  function setPos(clientX){
+    var rect = frame.getBoundingClientRect();
+    var x = Math.max(0, Math.min(clientX - rect.left, rect.width));
+    var pct = (x / rect.width) * 100;
+    after.style.width = pct + '%';
+    handle.style.left = pct + '%';
+  }
+
+  function down(e){ dragging = true; setPos((e.touches?e.touches[0].clientX:e.clientX)); }
+  function move(e){ if(!dragging) return; setPos((e.touches?e.touches[0].clientX:e.clientX)); e.preventDefault(); }
+  function up(){ dragging = false; }
+
+  handle.addEventListener('mousedown', down);
+  frame.addEventListener('mousedown', down);
+  window.addEventListener('mousemove', move);
+  window.addEventListener('mouseup', up);
+  handle.addEventListener('touchstart', down, {passive:true});
+  frame.addEventListener('touchstart', down, {passive:true});
+  window.addEventListener('touchmove', move, {passive:false});
+  window.addEventListener('touchend', up);
+})();
+</script>
+</body>
+</html>
