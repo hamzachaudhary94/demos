@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>A loudness fix, one real upload</title>
+<style>
+  :root{
+    --bg:#0e0f12; --card:#16181d; --line:#23262d;
+    --text:#e8eaee; --muted:#8b90a0; --accent:#2dd4a0; --warn:#e8b93e;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);
+       font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+       padding:32px 20px}
+  .wrap{max-width:860px;margin:0 auto}
+  h1{font-size:26px;line-height:1.25;margin:0 0 6px}
+  .sub{color:var(--muted);margin:0 0 28px}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media(max-width:680px){.grid{grid-template-columns:1fr}}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px}
+  .card h2{font-size:14px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
+  video{width:100%;border-radius:8px;display:block;background:#000}
+  audio{width:100%;display:block}
+  .n{font-size:28px;font-weight:700;margin:12px 0 2px}
+  .n.bad{color:var(--warn)} .n.good{color:var(--accent)}
+  .cap{color:var(--muted);font-size:13px}
+  .note{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--accent);
+        border-radius:10px;padding:16px 18px;margin:22px 0}
+  .note p{margin:0 0 10px} .note p:last-child{margin:0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px}
+  th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line)}
+  th{color:var(--muted);font-weight:600;font-size:13px;letter-spacing:.04em;text-transform:uppercase}
+  td.v{font-variant-numeric:tabular-nums;font-weight:600}
+  footer{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);color:var(--muted);font-size:14px}
+  footer b{color:var(--text);font-weight:600}
+  a{color:var(--accent)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>One real upload, one fifteen-second fix</h1>
+  <p class="sub">Same clip, sound only. Nothing recut, no video shown, audio speaks for itself.</p>
+
+  <div class="grid">
+    <div class="card">
+      <h2>As uploaded</h2>
+      <audio controls preload="metadata" src="before.m4a"></audio>
+      <div class="n bad">-27.9 LUFS</div>
+      <div class="cap">About 13 dB below where most platforms sit</div>
+    </div>
+    <div class="card">
+      <h2>Same clip, levels corrected</h2>
+      <audio controls preload="metadata" src="after.m4a"></audio>
+      <div class="n good">-15.2 LUFS</div>
+      <div class="cap">In line with typical platform loudness</div>
+    </div>
+  </div>
+
+  <div class="note">
+    <p><b>Turn your volume to a normal level and play the left one, then the right one.</b> Do not adjust anything in between. That difference is what a viewer meets in the first second.</p>
+    <p>YouTube turns loud audio <em>down</em>. It never turns quiet audio <em>up</em>. So a quiet upload stays quiet next to everything else in the feed, and the viewer has to go and find the volume before they have decided to care.</p>
+  </div>
+
+  <img src="loudness.png" alt="Waveform of a real upload at -27.9 LUFS, above the same clip corrected to -15.2 LUFS" style="width:100%;border-radius:10px;border:1px solid var(--line);margin:22px 0;display:block">
+
+  <table>
+    <tr><th>Measured</th><th>Integrated loudness</th></tr>
+    <tr><td>As uploaded</td><td class="v">-27.9 LUFS</td></tr>
+    <tr><td>Same clip, corrected</td><td class="v">-15.2 LUFS</td></tr>
+    <tr><td>Difference</td><td class="v">12.7 LU</td></tr>
+  </table>
+
+  <p class="cap">Measured with EBU R128 loudness normalisation, directly on the audio in these two files. Nothing here is an estimate.</p>
+
+  <div class="note">
+    <p><b>What this actually is.</b> A real DTC brand's own YouTube upload, quiet enough that a viewer has to reach for the volume. We are not naming them: this is unsolicited work we did to check our own eye for it, never a job they asked for or paid us for. Nobody hired us for this. We just noticed, and fixed it, to see if it was worth fixing.</p>
+  </div>
+
+  <footer>
+    <b>MotionOx</b><br>
+    Video production studio<br>
+    <a href="https://motionox.co">motionox.co</a>
+  </footer>
+
+</div>
+</body>
+</html>
