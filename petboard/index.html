@@ -414,7 +414,7 @@
 
     <div class="eyebrow"><span class="dot"></span> A quick idea, not a pitch</div>
     <h1 class="headline">What if checking a boarding date never meant waiting on an email back?</h1>
-    <p class="sub"><span class="biz-name">This business</span>, right now: <span class="reply-window">enquire and wait</span>. This is just a small working look at what an instant reservation confirmation could feel like instead.</p>
+    <p class="sub"><span class="now-line" hidden><span class="biz-name">This business</span>, right now: <span class="reply-window"></span>. </span>This is just a small working look at what an instant reservation confirmation could feel like instead.</p>
 
     <div class="compare">
       <div class="card typical">
@@ -469,7 +469,7 @@
         </div>
         <div class="field">
           <label for="phone">Best number to reach you</label>
-          <input type="tel" id="phone" placeholder="04xx xxx xxx" required>
+          <input type="tel" id="phone" placeholder="Your mobile number" required>
         </div>
         <button type="submit" class="submit-btn">Send, and see what happens</button>
       </form>
@@ -512,6 +512,7 @@
   }
   if(hours){
     document.querySelectorAll('.reply-window').forEach(function(el){ el.textContent = hours; });
+    document.querySelectorAll('.now-line').forEach(function(el){ el.hidden = false; });
   }
 })();
 (function(){

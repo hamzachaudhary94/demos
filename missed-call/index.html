@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Missed call, answered — concept demo</title>
+<title>Missed call, texted back, concept demo</title>
 <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
 <link href="https://api.fontshare.com/v2/css?f%5B%5D=satoshi@400,500,700,900&display=swap" rel="stylesheet">
 <style>
@@ -104,7 +104,7 @@ a.ghost,button.ghost{background:transparent;color:var(--ink);border:1px solid va
 </head>
 <body>
 <div class="tag">Concept demo &middot; not a real service</div>
-<h1 id="h1">The call you miss, <em>answered anyway</em></h1>
+<h1 id="h1">The call you miss, <em>texted back</em></h1>
 <p class="sub" id="sub">Watch what happens when nobody can get to the phone.</p>
 
 <div class="namewrap">
@@ -200,7 +200,7 @@ var C = COPY[TYPE] || COPY.trade;
 
 document.getElementById('bizname').textContent = BIZ;
 document.getElementById('initials').textContent = BIZ.trim().charAt(0).toUpperCase() || 'B';
-document.title = 'Missed call, answered — ' + BIZ;
+document.title = 'Missed call, texted back, ' + BIZ;
 document.getElementById('sub').textContent = 'Watch what happens when nobody at ' + BIZ + ' can get to the phone.';
 
 var msgs=document.getElementById('msgs'), call=document.getElementById('call'),

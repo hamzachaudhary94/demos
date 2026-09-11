@@ -413,8 +413,8 @@
     </svg>
 
     <div class="eyebrow"><span class="dot"></span> A quick idea, not a pitch</div>
-    <h1 class="headline">What if a call-out never had to wait for a callback?</h1>
-    <p class="sub"><span class="biz-name">This business</span>, right now: <span class="reply-window">phone only, no online booking</span>. This is just a small working look at what an instant booking confirmation could feel like instead.</p>
+    <h1 class="headline">What if asking for a call-out never meant wondering if anyone got it?</h1>
+    <p class="sub"><span class="now-line" hidden><span class="biz-name">This business</span>, right now: <span class="reply-window"></span>. </span>This is just a small working look at a request form that shows, on the spot, that the request is in and roughly when to expect a callback.</p>
 
     <div class="compare">
       <div class="card typical">
@@ -432,8 +432,8 @@
         <div class="icon"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
         <div>
           <div class="tag">This demo</div>
-          <div class="big">Confirmed on the spot</div>
-          <div class="fine">Book it, get confirmed right away.</div>
+          <div class="big">Request in, on the spot</div>
+          <div class="fine">Send it, see a callback window right away.</div>
         </div>
       </div>
     </div>
@@ -470,7 +470,7 @@
         </div>
         <div class="field">
           <label for="phone">Best number to reach you</label>
-          <input type="tel" id="phone" placeholder="04xx xxx xxx" required>
+          <input type="tel" id="phone" placeholder="Your mobile number" required>
         </div>
         <button type="submit" class="submit-btn">Send, and see what happens</button>
       </form>
@@ -513,6 +513,7 @@
   }
   if(hours){
     document.querySelectorAll('.reply-window').forEach(function(el){ el.textContent = hours; });
+    document.querySelectorAll('.now-line').forEach(function(el){ el.hidden = false; });
   }
 })();
 (function(){
