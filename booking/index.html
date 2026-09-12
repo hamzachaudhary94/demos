@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Booking flow, concept demo</title>
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+<link href="https://api.fontshare.com/v2/css?f%5B%5D=satoshi@400,500,700,900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#f4f4f2; --dim:#9a9a94; --line:rgba(255,255,255,.10);
+  --bg:#0c0d0f; --card:#15171a; --card2:#1b1e22; --accent:#2dd4a0; --accent-ink:#04120d;
+  --font:"Satoshi",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+body{background:var(--bg);color:var(--ink);font-family:var(--font);-webkit-font-smoothing:antialiased;
+  min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:18px 14px 54px}
+.tag{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);
+  border:1px solid var(--line);border-radius:999px;padding:6px 13px;margin-bottom:14px}
+h1{font-size:clamp(23px,4.4vw,32px);font-weight:700;line-height:1.15;text-align:center;max-width:19ch;letter-spacing:-.02em}
+.sub{color:var(--dim);font-size:14px;line-height:1.55;text-align:center;max-width:42ch;margin:10px 0 24px}
+.sub b{color:#c9c9c4}
+
+.card{width:min(400px,100%);background:var(--card);border:1px solid var(--line);border-radius:20px;
+  padding:20px;box-shadow:0 24px 60px -20px rgba(0,0,0,.55)}
+
+.tabs{display:flex;gap:7px;margin-bottom:16px}
+.tab{flex:1;background:var(--card2);border:1px solid var(--line);color:var(--dim);border-radius:11px;
+  padding:9px 6px;font-family:var(--font);font-size:12.5px;font-weight:600;cursor:pointer;transition:.16s;text-align:center}
+.tab.on{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.tab:not(.on):hover{border-color:rgba(255,255,255,.3);color:var(--ink)}
+
+.days{display:flex;gap:7px;margin-bottom:14px}
+.day{flex:1;background:transparent;border:1px solid var(--line);color:var(--dim);border-radius:11px;
+  padding:8px 6px;font-family:var(--font);font-size:12.5px;font-weight:600;cursor:pointer;transition:.16s;text-align:center}
+.day.on{border-color:var(--accent);color:var(--accent)}
+
+.slothead{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--dim);margin:6px 0 9px}
+.slots{display:grid;grid-template-columns:1fr 1fr;gap:8px;min-height:100px}
+.slot{background:var(--card2);border:1px solid var(--line);color:var(--ink);border-radius:11px;
+  padding:11px 8px;font-family:var(--font);font-size:13px;font-weight:600;cursor:pointer;transition:.16s}
+.slot:hover{border-color:var(--accent);transform:translateY(-1px)}
+.slot:active{transform:none}
+.empty{grid-column:1/-1;color:var(--dim);font-size:12.5px;text-align:center;padding:22px 8px;line-height:1.5}
+
+.confirm{display:none;text-align:center;padding:8px 4px 2px}
+.confirm.on{display:block}
+.tick{display:inline-grid;place-items:center;width:40px;height:40px;border-radius:50%;background:var(--accent);
+  color:var(--accent-ink);font-size:20px;font-weight:900;margin-bottom:12px;
+  animation:tick .45s cubic-bezier(.2,.9,.3,1.4) both}
+@keyframes tick{from{transform:scale(0) rotate(-40deg)}to{transform:none}}
+.confirm .big{font-size:16px;font-weight:700;margin-bottom:6px}
+.confirm .small{color:var(--dim);font-size:13px;line-height:1.5;max-width:30ch;margin:0 auto}
+.body-on{display:block}
+.body-off{display:none}
+
+.controls{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap;justify-content:center}
+a.act,button.act{background:var(--ink);color:#0c0d0f;border:0;border-radius:12px;padding:13px 22px;
+  font-size:14px;font-weight:700;font-family:var(--font);cursor:pointer;transition:.16s}
+a.act:hover,button.act:hover{transform:translateY(-2px);box-shadow:0 10px 26px rgba(255,255,255,.14)}
+a.ghost,button.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.note{margin-top:26px;color:var(--dim);font-size:12.5px;line-height:1.65;text-align:center;max-width:44ch}
+.note b{color:#c9c9c4}
+.disclose{margin-top:14px;color:var(--dim);font-size:11.5px;text-align:center;max-width:40ch;line-height:1.5;
+  border-top:1px solid var(--line);padding-top:14px}
+@media (max-width:400px){h1{font-size:22px}.card{padding:16px}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="tag">Concept demo &middot; not a real service</div>
+<h1 id="h1">See who is actually free, before you call</h1>
+<p class="sub" id="sub">A small working look at a booking flow for <b class="biz-name">this business</b> that only ever shows a real, open slot.</p>
+
+<div class="card">
+  <div class="tabs" id="tabs"></div>
+  <div class="days" id="days">
+    <button class="day on" data-day="today">Today</button>
+    <button class="day" data-day="tomorrow">Tomorrow</button>
+  </div>
+
+  <div id="bookingBody" class="body-on">
+    <div class="slothead" id="slothead">Open times</div>
+    <div class="slots" id="slots"></div>
+  </div>
+
+  <div id="confirm" class="confirm">
+    <div class="tick">&#10003;</div>
+    <div class="big" id="confirmBig">Booked.</div>
+    <div class="small" id="confirmSmall">A confirmation would be sent automatically. No callback needed.</div>
+  </div>
+</div>
+
+<div class="controls">
+  <button class="act ghost" id="again" style="display:none">Try another time</button>
+  <a class="act ghost" href="#what" style="text-decoration:none;display:grid;place-items:center">What is this?</a>
+</div>
+
+<p class="note" id="what"><b>This is a concept demo, not <span class="biz-name">this business</span>'s real website and not a live booking system.</b><br>
+Nothing you click here is booked, sent or stored anywhere. Built to show one idea: a real, working booking flow that only shows a slot when it is actually open.</p>
+
+<p class="disclose">Built this as a free concept for <b class="biz-name">this business</b>. Not a sales pitch, just a working idea. If it's useful, happy to build the real thing. If not, no worries either way.</p>
+
+<script>
+var params = new URLSearchParams(location.search);
+var BIZ = (params.get('biz') || 'this business').trim();
+var TYPE = (params.get('type') || 'vet').toLowerCase();
+
+var NOUN = (TYPE === 'dental') ? 'dentist' : 'vet';
+var VERB = (TYPE === 'dental') ? 'consult' : 'appointment';
+var NOUN_CAP = NOUN.charAt(0).toUpperCase() + NOUN.slice(1);
+
+document.title = 'Booking flow, concept demo, ' + BIZ;
+document.querySelectorAll('.biz-name').forEach(function(el){ el.textContent = BIZ; });
+document.getElementById('h1').textContent = 'See which ' + NOUN + ' is actually free';
+document.getElementById('sub').innerHTML = 'A small working look at a booking flow for <b class="biz-name">' + esc(BIZ) + '</b> that only ever shows a real, open slot, not a maybe.';
+
+function esc(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML;}
+
+// Deterministic demo data. Two anonymous providers plus "any", never a real named
+// person: LAW 39, a demo must never carry a real staff member's identity.
+var DATA = {
+  today: {
+    any:['10:30am','2:00pm','4:15pm'],
+    p1:['10:30am'],
+    p2:['2:00pm','4:15pm']
+  },
+  tomorrow: {
+    any:['9:00am','11:30am','1:15pm','3:00pm'],
+    p1:['9:00am','3:00pm'],
+    p2:['11:30am','1:15pm']
+  }
+};
+
+var tabs = [
+  {key:'any', label:'Any ' + NOUN},
+  {key:'p1', label:NOUN_CAP + ' 1'},
+  {key:'p2', label:NOUN_CAP + ' 2'}
+];
+var tabsEl = document.getElementById('tabs');
+tabs.forEach(function(t,i){
+  var b = document.createElement('button');
+  b.className = 'tab' + (i===0?' on':'');
+  b.textContent = t.label;
+  b.dataset.key = t.key;
+  b.addEventListener('click', function(){
+    tabsEl.querySelectorAll('.tab').forEach(function(x){x.classList.remove('on');});
+    b.classList.add('on');
+    render();
+  });
+  tabsEl.appendChild(b);
+});
+
+var daysEl = document.getElementById('days');
+daysEl.querySelectorAll('.day').forEach(function(d){
+  d.addEventListener('click', function(){
+    daysEl.querySelectorAll('.day').forEach(function(x){x.classList.remove('on');});
+    d.classList.add('on');
+    render();
+  });
+});
+
+var slotsEl = document.getElementById('slots');
+var slotheadEl = document.getElementById('slothead');
+var bookingBody = document.getElementById('bookingBody');
+var confirmEl = document.getElementById('confirm');
+var againBtn = document.getElementById('again');
+
+function currentTab(){ return tabsEl.querySelector('.tab.on').dataset.key; }
+function currentDay(){ return daysEl.querySelector('.day.on').dataset.day; }
+function tabLabel(key){ return tabs.filter(function(t){return t.key===key;})[0].label; }
+
+function render(){
+  var day = currentDay(), tab = currentTab();
+  var list = DATA[day][tab] || [];
+  slotheadEl.textContent = (tab==='any' ? 'Open times, any ' + NOUN : tabLabel(tab) + ', open times') + ' · ' + (day==='today'?'today':'tomorrow');
+  slotsEl.innerHTML = '';
+  if(!list.length){
+    var e = document.createElement('div');
+    e.className = 'empty';
+    e.textContent = 'Nothing open here. Try another ' + NOUN + ' or the next day.';
+    slotsEl.appendChild(e);
+    return;
+  }
+  list.forEach(function(time){
+    var btn = document.createElement('button');
+    btn.className = 'slot';
+    btn.textContent = time;
+    btn.addEventListener('click', function(){ book(time, tab, day); });
+    slotsEl.appendChild(btn);
+  });
+}
+
+function book(time, tab, day){
+  bookingBody.classList.remove('body-on'); bookingBody.classList.add('body-off');
+  confirmEl.classList.add('on');
+  againBtn.style.display = 'inline-block';
+  var who = tab==='any' ? 'the next free ' + NOUN : tabLabel(tab);
+  document.getElementById('confirmBig').textContent = NOUN_CAP + ' ' + VERB + ' booked, ' + (day==='today'?'today':'tomorrow') + ' ' + time + '.';
+  document.getElementById('confirmSmall').textContent = 'With ' + who + '. A confirmation would be sent automatically, no callback needed.';
+}
+
+againBtn.addEventListener('click', function(){
+  confirmEl.classList.remove('on');
+  bookingBody.classList.remove('body-off'); bookingBody.classList.add('body-on');
+  againBtn.style.display = 'none';
+});
+
+render();
+</script>
+</body>
+</html>
