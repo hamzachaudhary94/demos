@@ -206,6 +206,11 @@ function run(){
         bubble('them','<div class="confirm"><span class="tick">&#10003;</span>'+
           C.ask+'</div>');
         step(4);
+        at(900,function(){
+          bubble('them','If this is an emergency, please call: ARC Central (09) 281 5815, '+
+            'Animal Emergency at VSA (09) 849 2121, Manukau After Hours (09) 277 8383, '+
+            'or Western After Hours (09) 820 7273.');
+        });
       });
     });
   });
