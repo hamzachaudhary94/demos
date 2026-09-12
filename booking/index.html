@@ -110,8 +110,10 @@ var params = new URLSearchParams(location.search);
 var BIZ = (params.get('biz') || 'this business').trim();
 var TYPE = (params.get('type') || 'vet').toLowerCase();
 
-var NOUN = (TYPE === 'dental') ? 'dentist' : 'vet';
-var VERB = (TYPE === 'dental') ? 'consult' : 'appointment';
+var NOUN_MAP = { dental: 'dentist', legal: 'lawyer', vet: 'vet' };
+var VERB_MAP = { dental: 'consult', legal: 'consult', vet: 'appointment' };
+var NOUN = NOUN_MAP[TYPE] || 'vet';
+var VERB = VERB_MAP[TYPE] || 'appointment';
 var NOUN_CAP = NOUN.charAt(0).toUpperCase() + NOUN.slice(1);
 
 document.title = 'Booking flow, concept demo, ' + BIZ;
