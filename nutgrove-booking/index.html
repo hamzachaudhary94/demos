@@ -107,8 +107,8 @@ Nothing you click here is booked, sent or stored anywhere. Built to show one ide
 
 <script>
 var params = new URLSearchParams(location.search);
-var BIZ = (params.get('biz') || 'this business').trim();
-var TYPE = (params.get('type') || 'vet').toLowerCase();
+var BIZ = 'Nutgrove Veterinary Hospital';
+var TYPE = 'vet';
 
 var NOUN = (TYPE === 'dental') ? 'dentist' : 'vet';
 var VERB = (TYPE === 'dental') ? 'consult' : 'appointment';

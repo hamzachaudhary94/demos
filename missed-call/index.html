@@ -100,10 +100,14 @@ a.ghost,button.ghost{background:transparent;color:var(--ink);border:1px solid va
   .tick{transform:none!important}
   .call.gone{opacity:0!important}
 }
+.emergency{width:min(330px,100%);background:rgba(229,72,77,.09);border:1px solid rgba(229,72,77,.35);
+  border-radius:12px;padding:11px 14px;font-size:12.5px;line-height:1.5;color:var(--ink);margin-bottom:14px;text-align:center}
+.emergency b{color:var(--red)}
 </style>
 </head>
 <body>
 <div class="tag">Concept demo &middot; not a real service</div>
+<div class="emergency" id="emergencyBanner" style="display:none"></div>
 <h1 id="h1">The call you miss, <em>texted back</em></h1>
 <p class="sub" id="sub">Watch what happens when nobody can get to the phone.</p>
 
@@ -150,17 +154,18 @@ Nothing typed here is sent or stored anywhere. Built to show one idea: a missed 
 <script>
 var BIZ = new URLSearchParams(location.search).get('biz') || 'Your business';
 var TYPE = (new URLSearchParams(location.search).get('type') || '').toLowerCase();
+if (!TYPE) { TYPE = 'trade'; }
 
-// 🩸 6 Sep 2026: batch 5 was drafted just before the type= variants existed, so its
-// links carry no type= and fall back to 'trade'. That's wrong for a dental clinic.
-// The link is already sent and cannot be edited, but the page is stateless and reads
-// the query string fresh on every load, so a recipient who clicks NOW can still see
-// the right wording. Exact-name fallback for already-sent links only, never a
-// substitute for putting type= in the URL at draft time going forward.
-var SENT_TYPE_FALLBACK = {
-  'Hamilton Dental Emergency Centre': 'medical'
-};
-if (!TYPE) { TYPE = (SENT_TYPE_FALLBACK[BIZ] || 'trade').toLowerCase(); }
+// 🛑 Emergency wording, per business, never baked into the shared TYPE copy below.
+// A real phone number or clinic name belongs to ONE business, and every other lead
+// using the same type= would otherwise inherit it silently. Optional, short, guarded.
+var EMERGENCY = (new URLSearchParams(location.search).get('emergency') || '').trim();
+if (EMERGENCY.length > 220) { EMERGENCY = ''; }
+if (EMERGENCY) {
+  var eb = document.getElementById('emergencyBanner');
+  eb.innerHTML = '<b>In a real emergency:</b> ' + esc(EMERGENCY);
+  eb.style.display = 'block';
+}
 
 // Same mechanic every time: ring, miss, text back, pick a slot, confirm.
 // Only the WORDING changes per business type, so the surface fits a
