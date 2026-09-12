@@ -103,6 +103,7 @@ a.ghost,button.ghost{background:transparent;color:var(--ink);border:1px solid va
 <p class="note" id="what"><b>This is a concept demo, not <span class="biz-name">this business</span>'s real website and not a live booking system.</b><br>
 Nothing you click here is booked, sent or stored anywhere. Built to show one idea: a real, working booking flow that only shows a slot when it is actually open.</p>
 
+<p class="note">For a real emergency, this demo changes nothing: Nutgrove's own site says emergency veterinary care is available 24 hours a day, 365 days a year, call 01 295 1202 directly.</p>
 <p class="disclose">Built this as a free concept for <b class="biz-name">this business</b>. Not a sales pitch, just a working idea. If it's useful, happy to build the real thing. If not, no worries either way.</p>
 
 <script>
@@ -135,15 +136,17 @@ if (EMERGENCY) {
 // Deterministic demo data. Two anonymous providers plus "any", never a real named
 // person: LAW 39, a demo must never carry a real staff member's identity.
 var DATA = {
+  // Slot times drawn from Nutgrove's own published hours (Mon-Fri 9.30am-1.30pm,
+  // 2.30-7pm, closed 1.30-2.30pm for emergencies only), a concept demo, never live availability.
   today: {
-    any:['10:30am','2:00pm','4:15pm'],
-    p1:['10:30am'],
-    p2:['2:00pm','4:15pm']
+    any:['10:00am','3:15pm','6:30pm'],
+    p1:['10:00am','6:30pm'],
+    p2:['3:15pm']
   },
   tomorrow: {
-    any:['9:00am','11:30am','1:15pm','3:00pm'],
-    p1:['9:00am','3:00pm'],
-    p2:['11:30am','1:15pm']
+    any:['9:45am','3:00pm','6:00pm'],
+    p1:['9:45am','6:00pm'],
+    p2:['3:00pm']
   }
 };
 
