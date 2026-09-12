@@ -194,6 +194,13 @@ var COPY = {
     slots: ['Today 5:00pm','Tomorrow 10:00am','Tomorrow 4:00pm'],
     verb: "You're booked",
     confirmTail: 'has it saved'
+  },
+  legal: {
+    apology: 'We are with a client right now.',
+    ask: 'Want to lock in a time instead of waiting on hold?',
+    slots: ['Today 3:00pm','Tomorrow 9:30am','Tomorrow 2:00pm'],
+    verb: 'Appointment booked',
+    confirmTail: 'has it in the diary'
   }
 };
 var C = COPY[TYPE] || COPY.trade;
